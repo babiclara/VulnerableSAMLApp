@@ -43,8 +43,6 @@ class OneLogin_Saml2_IdPMetadataParser(object):
             response = urllib2.urlopen(url)
         else:
             ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
             response = urllib2.urlopen(url, context=ctx)
         xml = response.read()
 
