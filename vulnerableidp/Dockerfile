@@ -4,12 +4,11 @@ FROM ubuntu:xenial
 #ENV https_proxy=''
 #ENV no_proxy='127.0.0.1'
 
-RUN apt-get update -y
-RUN apt-get install --fix-missing -y apache2 simplesamlphp
-
-RUN a2enconf simplesamlphp
-RUN touch /usr/share/simplesamlphp/modules/exampleauth/enable
-RUN sed -ie "s/'enable.saml20-idp' => false/'enable.saml20-idp' => true/g" /etc/simplesamlphp/config.php
+RUN apt-get update -y && \
+    apt-get install --fix-missing -y apache2 simplesamlphp && \
+    a2enconf simplesamlphp && \
+    touch /usr/share/simplesamlphp/modules/exampleauth/enable && \
+    sed -ie "s/'enable.saml20-idp' => false/'enable.saml20-idp' => true/g" /etc/simplesamlphp/config.php
 
 #Build the IDP login landing page
 #RUN echo "<h1>Jelly Stone IDP</h1><center>" > /usr/share/simplesamlphp/templates/includes/header.php
