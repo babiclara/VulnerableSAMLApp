@@ -90,6 +90,7 @@ class OneLogin_Saml2_Utils(object):
     ASSERTION_SIGNATURE_XPATH = '/samlp:Response/saml:Assertion/ds:Signature'
     XMLNS_SAML = 'xmlns:saml'
     EMPTY_INPUT_ERROR = 'Empty string supplied as input'
+    XML_PARSE_ERROR = 'Error parsing xml string'
 
     @staticmethod
     def decode_base64_and_inflate(value):
@@ -855,7 +856,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(xml.encode('utf-8'))
         else:
-            raise Exception('Error parsing xml string')
+            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
@@ -982,7 +983,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(str(xml))
         else:
-            raise Exception('Error parsing xml string')
+            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
@@ -1061,7 +1062,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(str(xml))
         else:
-            raise Exception('Error parsing xml string')
+            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
