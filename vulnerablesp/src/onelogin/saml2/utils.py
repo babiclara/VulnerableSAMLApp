@@ -834,7 +834,7 @@ class OneLogin_Saml2_Utils(object):
         :rtype: string
         """
         if xml is None or xml == '':
-            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
@@ -856,7 +856,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(xml.encode('utf-8'))
         else:
-            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
@@ -961,7 +961,7 @@ class OneLogin_Saml2_Utils(object):
         :type raise_exceptions: Boolean
         """
         if xml is None or xml == '':
-            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
@@ -983,7 +983,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(str(xml))
         else:
-            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
@@ -1045,7 +1045,7 @@ class OneLogin_Saml2_Utils(object):
         :type raise_exceptions: Boolean
         """
         if xml is None or xml == '':
-            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
@@ -1062,7 +1062,7 @@ class OneLogin_Saml2_Utils(object):
         elif isinstance(xml, basestring):
             elem = fromstring(str(xml))
         else:
-            raise Exception(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
+            raise ValueError(OneLogin_Saml2_Utils.XML_PARSE_ERROR)
 
         error_callback_method = None
         if debug:
