@@ -54,6 +54,26 @@ def build_docker(image_build):
         print('To run the image manually after shutting it down use the command below:')
         print(f'\t sudo docker run -it --rm --name {image_build} -d -p 8000:8000 {image_build}:1.0')
 
+def get_host_config_option():
+    while True:
+        try:
+            option = int(input('#  '))
+            if option in (1, 2):
+                return option
+            print('Please enter 1 or 2')
+        except Exception:
+            print('Must be a number')
+
+
+def get_docker_direction():
+    while True:
+        try:
+            direction = input('Do you want to also create and run the Docker image for this host, Y/N? ')
+            if direction[0].lower() in ('y', 'n'):
+                return direction
+            print('Must be either a Y or N')
+        except Exception as e:
+            print(f'Must be a Y or N: {e}')
 
 def main():
     # Reset the config files for each run to give people the ability to re-run this if they typo something
@@ -62,8 +82,7 @@ def main():
     copyfile('vulnerablesp/yogiSP/saml/settings.original','vulnerablesp/yogiSP/saml/settings.json')
     copyfile('vulnerableidp/saml20-sp-remote.original','vulnerableidp/saml20-sp-remote.php')
 
-    host_config_option = ''
-    print(" Begining the configuration process. \n") 
+    print(" Begining the configuration process. \n")
 
     print('---------------------------------------------')
     print(" Please note that this script is basically doing a find in replace on specific strings that exist in the initial files cloned from the repository.\n If you've already ran this script once and specified different IPs/hostnames for the SP and IDP, there is a strong chance it will not actually update the configuration files for you.\n You should consider manually editing the configuration files or deleteing and re-cloning the repository.")
@@ -71,23 +90,8 @@ def main():
 
     print('\n Which server are we configuring? \n 1 - Identity Prodiver (IDP) \n 2 - Serivce Provider/Web App (SP)')
 
-    while True:
-        try:
-            host_config_option = int(input('#  '))
-            if host_config_option == 1 or host_config_option == 2:
-                break
-            print('Please enter 1 or 2')
-        except Exception as e:
-            print('Must be a number')
-
-    while True:
-        try:
-            docker_direction = input('Do you want to also create and run the Docker image for this host, Y/N? ')
-            if docker_direction[0].lower() == 'y' or docker_direction[0].lower() == 'n':
-                break
-            print('Must be either a Y or N')
-        except Exception as e:
-            print(f'Must be a Y or N: {e}')
+    host_config_option = get_host_config_option()
+    docker_direction = get_docker_direction()
 
     if docker_direction == 'Y':
         if os.geteuid() != 0:
