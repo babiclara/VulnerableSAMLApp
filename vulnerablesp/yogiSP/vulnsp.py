@@ -25,7 +25,9 @@ from jsonparse import jsonEditor
 from jsonparse import jsonReader
 
 app = Flask(__name__, static_url_path='/static')
-app.config['SECRET_KEY'] = 'onelogindemopytoolkit'
+app.config.update(
+    SECRET_KEY=os.environ.get('FLASK_SECRET_KEY')
+)
 app.config['SAML_PATH'] = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'saml')
 
 
