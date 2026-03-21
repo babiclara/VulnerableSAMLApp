@@ -14,13 +14,13 @@ RUN apt-get update -y && \
 #RUN echo "<h1>Jelly Stone IDP</h1><center>" > /usr/share/simplesamlphp/templates/includes/header.php
 #RUN echo "</center> > /usr/share/simplesamlphp/templates/includes/footer.php 
 
-ADD authsources.php /etc/simplesamlphp/
-ADD saml20-idp-hosted.php /etc/simplesamlphp/metadata/
-ADD saml20-sp-remote.php /etc/simplesamlphp/metadata/
-ADD yogi-idp.local.crt /etc/ssl/certs/
-ADD yogi-idp.local.pem /etc/ssl/certs/
-ADD loginuserpass.php /usr/share/simplesamlphp/modules/core/templates/
-ADD welcome.png /usr/share/simplesamlphp/www/resources/
+COPY authsources.php /etc/simplesamlphp/
+COPY saml20-idp-hosted.php /etc/simplesamlphp/metadata/
+COPY saml20-sp-remote.php /etc/simplesamlphp/metadata/
+COPY yogi-idp.local.crt /etc/ssl/certs/
+COPY yogi-idp.local.pem /etc/ssl/certs/
+COPY loginuserpass.php /usr/share/simplesamlphp/modules/core/templates/
+COPY welcome.png /usr/share/simplesamlphp/www/resources/
 EXPOSE 80
 
 # Start the web service
