@@ -5,9 +5,9 @@ from shutil import copyfile
 
 
 def sp_settings(json_file, sp_ip, idp_ip):
-    jsonFile = open(json_file, 'r')
-    data = json.load(jsonFile)
-    jsonFile.close()
+    json_file_handle = open(json_file, 'r')
+    data = json.load(json_file_handle)
+    json_file_handle.close()
 
     data['sp']['entityId'] = f'http://{sp_ip}:8000/metadata/'
     data['sp']['assertionConsumerService']['url'] = f'http://{sp_ip}:8000/?acs'
@@ -17,9 +17,9 @@ def sp_settings(json_file, sp_ip, idp_ip):
     data['idp']['singleSignOnService']['url'] = f'http://{idp_ip}/simplesamlphp/saml2/idp/SSOService.php'
     data['idp']['singleLogoutService']['url'] = f'http://{idp_ip}/simplesamlphp/saml2/idp/SingleLogoutService.php'
 
-    jsonFile = open(json_file, 'w+')
-    jsonFile.write(json.dumps(data, indent=4))
-    jsonFile.close()
+    json_file_handle  = open(json_file, 'w+')
+    json_file_handle.write(json.dumps(data, indent=4))
+    json_file_handle.close()
 
 
 def idp_settings(settings_file, sp_ip):
