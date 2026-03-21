@@ -88,6 +88,7 @@ class OneLogin_Saml2_Utils(object):
 
     RESPONSE_SIGNATURE_XPATH = '/samlp:Response/ds:Signature'
     ASSERTION_SIGNATURE_XPATH = '/samlp:Response/saml:Assertion/ds:Signature'
+    XMLNS_SAML = 'xmlns:saml'
 
     @staticmethod
     def decode_base64_and_inflate(value):
@@ -639,7 +640,7 @@ class OneLogin_Saml2_Utils(object):
         """
         doc = Document()
         name_id_container = doc.createElementNS(OneLogin_Saml2_Constants.NS_SAML, 'container')
-        name_id_container.setAttribute("xmlns:saml", OneLogin_Saml2_Constants.NS_SAML)
+        name_id_container.setAttribute(OneLogin_Saml2_Utils.XMLNS_SAML, OneLogin_Saml2_Constants.NS_SAML)
 
         name_id = doc.createElement('saml:NameID')
         if sp_nq is not None:
@@ -687,7 +688,7 @@ class OneLogin_Saml2_Utils(object):
             if newdoc.hasChildNodes():
                 child = newdoc.firstChild
                 child.removeAttribute('xmlns')
-                child.removeAttribute('xmlns:saml')
+                child.removeAttribute(OneLogin_Saml2_Utils.XMLNS_SAML)
                 child.setAttribute('xmlns:xenc', OneLogin_Saml2_Constants.NS_XENC)
                 child.setAttribute('xmlns:dsig', OneLogin_Saml2_Constants.NS_DS)
 
@@ -845,7 +846,7 @@ class OneLogin_Saml2_Utils(object):
             )
             xml.setAttributeNS(
                 unicode(OneLogin_Saml2_Constants.NS_SAML),
-                'xmlns:saml',
+                OneLogin_Saml2_Utils.XMLNS_SAML,
                 unicode(OneLogin_Saml2_Constants.NS_SAML)
             )
             xml = xml.toxml()
@@ -972,7 +973,7 @@ class OneLogin_Saml2_Utils(object):
             )
             xml.setAttributeNS(
                 unicode(OneLogin_Saml2_Constants.NS_SAML),
-                'xmlns:saml',
+                OneLogin_Saml2_Utils.XMLNS_SAML,
                 unicode(OneLogin_Saml2_Constants.NS_SAML)
             )
             xml = xml.toxml()
