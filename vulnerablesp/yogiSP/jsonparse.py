@@ -4,7 +4,7 @@ import io
 import random
 import json
 import time
-
+COMPLAINT_FILE = 'complaints/complaints.json'
 
 #### Update the settings stored in the settings file.
 #### This is the file that controls the security levels for the application
@@ -48,7 +48,7 @@ def jsonReader():
         cve201711427 = data_loaded['security']['cve-2017-11427']
         print(str(wantMessagesSigned))
     data_file.close()
-	
+
     settingValues = {'wantMessagesSigned':str(wantMessagesSigned),'wantAssertionsSigned':str(wantAssertionsSigned),'signMetadata':str(signMetadata),'validMessage':str(validMessage),'validAssertion':str(validAssertion),'cve-2017-11427':str(cve201711427)}
     return settingValues
 
@@ -57,14 +57,14 @@ def jsonReader():
 #### Porting from CSV to JSON for greater flexibility.....glen might have been right, this one time
 #### Read in all of the current complaints
 def jsonComplaintReader():
-    complaintFilename = 'complaints/complaints.json'
+    complaintFilename = COMPLAINT_FILE
     with open(complaintFilename,'r') as complaint_file:
         data = json.load(complaint_file)
         return data
 
 #### Write a new complaint to the json db file
 def jsonComplaintWriter(newComplaint):
-    complaintFilename = 'complaints/complaints.json'
+    complaintFilename = COMPLAINT_FILE
 
     #read in the entire file stick it into a variable
     with open(complaintFilename,'r') as complaint_file:
@@ -78,8 +78,8 @@ def jsonComplaintWriter(newComplaint):
 
 #### Delete 1 entry based on the 'id' number
 def jsonSingleComplaintDelete(complaintID):
-    complaintFilename = 'complaints/complaints.json'
-    
+    complaintFilename = COMPLAINT_FILE
+
     #read in the entire file stick it into a variable
     with open(complaintFilename,'r') as complaint_file:
         data = json.load(complaint_file)
@@ -88,7 +88,7 @@ def jsonSingleComplaintDelete(complaintID):
     for entry in data:
         if entry['id'] == complaintID:
             data.remove(entry)
-    
+
     stringBlob = json.dumps(data)
     with open(complaintFilename, 'w') as complaint_file:
         complaint_file.write(stringBlob)
