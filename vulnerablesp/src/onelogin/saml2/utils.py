@@ -433,7 +433,7 @@ class OneLogin_Saml2_Utils(object):
         :return: SAML2 timestamp.
         :rtype: string
         """
-        data = datetime.utcfromtimestamp(float(time))
+        data = datetime.fromtimestamp(float(time), tz=timezone.utc)
         return data.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     @staticmethod
