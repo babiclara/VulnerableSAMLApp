@@ -100,13 +100,13 @@ def main():
     idp_ip = input('What is the hostname/IP for the IDP? ')
 
     # Configure the Identity Platform (IDP)
-    if host_config_option is 1:
+    if host_config_option == 1:
         settings_file = 'vulnerableidp/saml20-sp-remote.php'
         idp_settings(settings_file, sp_ip)
         build_docker('idp')
 
     # Configure the web application / Service Provider (SP)
-    elif host_config_option is 2:
+    elif host_config_option == 2:
         json_file = 'vulnerablesp/yogiSP/saml/settings.json'
         sp_settings(json_file, sp_ip, idp_ip)
         build_docker('sp')
