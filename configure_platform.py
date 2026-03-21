@@ -93,9 +93,8 @@ def main():
     host_config_option = get_host_config_option()
     docker_direction = get_docker_direction()
 
-    if docker_direction == 'Y':
-        if os.geteuid() != 0:
-            sys.exit('Please re-run this script with root privileges if you want to have it build the docker commands for you')
+    if docker_direction == 'Y' and os.geteuid() != 0:
+        sys.exit('Please re-run this script with root privileges if you want to have it build the docker commands for you')
 
     sp_ip = input('What is the hostname/IP for the SP? ')
     idp_ip = input('What is the hostname/IP for the IDP? ')
