@@ -127,7 +127,7 @@ if ($this->data['errorcode'] !== null) {
         </table>
         <?php
         foreach ($this->data['stateparams'] as $name => $value) {
-            echo('<input type="hidden" name="'.htmlspecialchars($name).'" value="'.htmlspecialchars($value).'" />');
+            echo '<input type="hidden" name="'.htmlspecialchars($name).'" value="'.htmlspecialchars($value).'" />';
         }
         ?>
     </form>
