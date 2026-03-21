@@ -42,7 +42,8 @@ class OneLogin_Saml2_IdPMetadataParser(object):
         if validate_cert:
             response = urllib2.urlopen(url)
         else:
-            ctx = ssl.create_default_context()
+            ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ctx.minimum_version = ssl.TLSVersion.TLSv1_2
             response = urllib2.urlopen(url, context=ctx)
         xml = response.read()
 
