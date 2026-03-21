@@ -89,6 +89,7 @@ class OneLogin_Saml2_Utils(object):
     RESPONSE_SIGNATURE_XPATH = '/samlp:Response/ds:Signature'
     ASSERTION_SIGNATURE_XPATH = '/samlp:Response/saml:Assertion/ds:Signature'
     XMLNS_SAML = 'xmlns:saml'
+    EMPTY_INPUT_ERROR = 'Empty string supplied as input'
 
     @staticmethod
     def decode_base64_and_inflate(value):
@@ -832,7 +833,7 @@ class OneLogin_Saml2_Utils(object):
         :rtype: string
         """
         if xml is None or xml == '':
-            raise Exception('Empty string supplied as input')
+            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
@@ -959,7 +960,7 @@ class OneLogin_Saml2_Utils(object):
         :type raise_exceptions: Boolean
         """
         if xml is None or xml == '':
-            raise Exception('Empty string supplied as input')
+            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
@@ -1043,7 +1044,7 @@ class OneLogin_Saml2_Utils(object):
         :type raise_exceptions: Boolean
         """
         if xml is None or xml == '':
-            raise Exception('Empty string supplied as input')
+            raise Exception(OneLogin_Saml2_Utils.EMPTY_INPUT_ERROR)
         elif isinstance(xml, etree._Element):
             elem = xml
         elif isinstance(xml, Document):
