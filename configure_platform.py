@@ -32,11 +32,11 @@ def idp_settings(settings_file, sp_ip):
 
 def build_docker(image_build):
     # Builds and runs the docker image defined for the host. 
-    
+    SP_IMAGE = 'sp:1.0'
     if image_build == 'idp':
         build = subprocess.Popen(['docker', 'build', '-t', 'idp:1.0', 'vulnerableidp/'])
         build.wait()
-        run = subprocess.Popen(['docker', 'run', '-it', '--rm', '--name', 'sp', '-d', '-p', '80:80', 'sp:1.0'])
+        run = subprocess.Popen(['docker', 'run', '-it', '--rm', '--name', 'sp', '-d', '-p', '80:80', SP_IMAGE])
         run.wait()
         check = subprocess.Popen(['docker', 'ps', '--filter', '--name', 'sp'])
         check.wait()
@@ -44,9 +44,9 @@ def build_docker(image_build):
         print('To run the image manually after shutting it down use the command below:')
         print(f'\t sudo docker run -it --rm --name {image_build} -d -p 80:80 {image_build}:1.0')
     else:
-        build = subprocess.Popen(['docker', 'build', '-t', 'sp:1.0', 'vulnerablesp/'])
+        build = subprocess.Popen(['docker', 'build', '-t', SP_IMAGE, 'vulnerablesp/'])
         build.wait()
-        run = subprocess.Popen(['docker', 'run', '-it', '--rm', '--name', 'sp', '-d', '-p', '8000:8000', 'sp:1.0'])
+        run = subprocess.Popen(['docker', 'run', '-it', '--rm', '--name', 'sp', '-d', '-p', '8000:8000', SP_IMAGE])
         run.wait()
         check = subprocess.Popen(['docker', 'ps', '--filter', '--name', 'sp'])
         check.wait()
