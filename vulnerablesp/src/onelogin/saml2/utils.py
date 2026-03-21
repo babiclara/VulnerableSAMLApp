@@ -11,7 +11,7 @@ Auxiliary class of OneLogin's Python Toolkit.
 
 import base64
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timezone
 import calendar
 from hashlib import sha1, sha256, sha384, sha512
 from isodate import parse_duration as duration_parser
@@ -460,7 +460,7 @@ class OneLogin_Saml2_Utils(object):
         :return: unix timestamp of actual time.
         :rtype: int
         """
-        return calendar.timegm(datetime.utcnow().utctimetuple())
+        return calendar.timegm(datetime.now(tz=timezone.utc).utctimetuple())
 
     @staticmethod
     def parse_duration(duration, timestamp=None):
@@ -482,9 +482,9 @@ class OneLogin_Saml2_Utils(object):
 
         timedelta = duration_parser(duration)
         if timestamp is None:
-            data = datetime.utcnow() + timedelta
+            data = datetime.now(tz=timezone.utc) + timedelta
         else:
-            data = datetime.utcfromtimestamp(timestamp) + timedelta
+            data = datetime.fromtimestamp(timestamp, tz=timezone.utc) + timedelta
         return calendar.timegm(data.utctimetuple())
 
     @staticmethod
