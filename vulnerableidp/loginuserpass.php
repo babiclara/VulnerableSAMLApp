@@ -72,14 +72,14 @@ if ($this->data['errorcode'] !== null) {
             <tr>
                 <td><label for="password"><?php echo $this->t('{login:password}'); ?></label></td>
                 <td>
-                    <input id="password" type="password" tabindex="2" name="password"/>
+                    <input id="password" type="password" tabindex="0" name="password"/>
                 </td>
             <?php
             if ($this->data['rememberMeEnabled']) {
                 // display the remember me checkbox (keep me logged in)
             ?>
                 <td>
-                    <input type="checkbox" id="remember_me" tabindex="5"
+                    <input type="checkbox" id="remember_me" tabindex="0"
                         <?php echo ($this->data['rememberMeChecked']) ? 'checked="checked"' : ''; ?>
                            name="remember_me" value="Yes"/>
                     <small><?php echo $this->t('{login:remember_me}'); ?></small>
