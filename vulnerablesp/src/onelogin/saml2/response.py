@@ -20,6 +20,7 @@ from onelogin.saml2.errors import OneLogin_Saml2_Error, OneLogin_Saml2_Validatio
 
 RESPONSE_TAG_FORMAT = '{%s}Response'
 ASSERTION_TAG_FORMAT = '{%s}Assertion'
+RESPONSE_XPATH = '/samlp:Response'
 
 class OneLogin_Saml2_Response(object):
     """
@@ -733,12 +734,12 @@ class OneLogin_Saml2_Response(object):
         """
         assertion_expr = '/saml:Assertion'
         signature_expr = '/ds:Signature/ds:SignedInfo/ds:Reference'
-        signed_assertion_query = '/samlp:Response' + assertion_expr + signature_expr
+        signed_assertion_query = RESPONSE_XPATH + assertion_expr + signature_expr
         assertion_reference_nodes = self.__query(signed_assertion_query)
 
         if not assertion_reference_nodes:
             # Check if the message is signed
-            signed_message_query = '/samlp:Response' + signature_expr
+            signed_message_query = RESPONSE_XPATH + signature_expr
             message_reference_nodes = self.__query(signed_message_query)
             if message_reference_nodes:
                 message_id = message_reference_nodes[0].get('URI')
@@ -748,7 +749,7 @@ class OneLogin_Saml2_Response(object):
             final_query += assertion_expr
         else:
             assertion_id = assertion_reference_nodes[0].get('URI')
-            final_query = '/samlp:Response' + assertion_expr + "[@ID='%s']" % assertion_id[1:]
+            final_query = RESPONSE_XPATH + assertion_expr + "[@ID='%s']" % assertion_id[1:]
         final_query += xpath_expr
         return self.__query(final_query)
 
