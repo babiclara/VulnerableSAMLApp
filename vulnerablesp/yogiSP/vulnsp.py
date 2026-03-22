@@ -8,6 +8,7 @@ from shutil import copyfile
 
 from flask import (Flask, request, render_template, redirect, session,
                    make_response)
+from flask_wtf.csrf import CSRFProtect
 
 from urlparse import urlparse
 
@@ -29,6 +30,7 @@ app.config.update(
     SECRET_KEY=os.environ.get('FLASK_SECRET_KEY')
 )
 app.config['SAML_PATH'] = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'saml')
+csrf = CSRFProtect(app)
 
 
 def init_saml_auth(req):
