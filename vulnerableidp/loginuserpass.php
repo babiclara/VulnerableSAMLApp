@@ -32,7 +32,7 @@ if ($this->data['errorcode'] !== null) {
 }                                                                                                                                                                                
 
 ?>
-    <center>                                                                                                                               
+    <div style="text-align: center;">
     <h1 style="break: both"><?php echo 'Jellystone IDP' ?></h1>                                                                                                                                                                                             
     <img src="/simplesamlphp/resources/welcome.png"></img>                                                                                                                                                                          
     <br>
