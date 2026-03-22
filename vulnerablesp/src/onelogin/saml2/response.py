@@ -18,6 +18,8 @@ from onelogin.saml2.constants import OneLogin_Saml2_Constants
 from onelogin.saml2.utils import OneLogin_Saml2_Utils, return_false_on_exception
 from onelogin.saml2.errors import OneLogin_Saml2_Error, OneLogin_Saml2_ValidationError
 
+RESPONSE_TAG_FORMAT = '{%s}Response'
+ASSERTION_TAG_FORMAT = '{%s}Assertion'
 
 class OneLogin_Saml2_Response(object):
     """
@@ -103,8 +105,8 @@ class OneLogin_Saml2_Response(object):
 
             print(str(signed_elements)) #yogi
 
-            has_signed_response = '{%s}Response' % OneLogin_Saml2_Constants.NS_SAMLP in signed_elements
-            has_signed_assertion = '{%s}Assertion' % OneLogin_Saml2_Constants.NS_SAML in signed_elements
+            has_signed_response = RESPONSE_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAMLP in signed_elements
+            has_signed_assertion = ASSERTION_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAML in signed_elements
 
             if self.__settings.is_strict():
                 no_valid_xml_msg = 'Invalid SAML Response. Not match the saml-schema-protocol-2.0.xsd'
@@ -589,8 +591,8 @@ class OneLogin_Saml2_Response(object):
         signed_elements = []
         verified_seis = []
         verified_ids = []
-        response_tag = '{%s}Response' % OneLogin_Saml2_Constants.NS_SAMLP
-        assertion_tag = '{%s}Assertion' % OneLogin_Saml2_Constants.NS_SAML
+        response_tag = RESPONSE_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAMLP
+        assertion_tag = ASSERTION_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAML
 
         print(response_tag) #yogi
 
@@ -663,8 +665,8 @@ class OneLogin_Saml2_Response(object):
         if len(signed_elements) > 2:
             return False
 
-        response_tag = '{%s}Response' % OneLogin_Saml2_Constants.NS_SAMLP
-        assertion_tag = '{%s}Assertion' % OneLogin_Saml2_Constants.NS_SAML
+        response_tag = RESPONSE_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAMLP
+        assertion_tag = ASSERTION_TAG_FORMAT % OneLogin_Saml2_Constants.NS_SAML
 
         if (response_tag in signed_elements and signed_elements.count(response_tag) > 1) or \
            (assertion_tag in signed_elements and signed_elements.count(assertion_tag) > 1) or \
