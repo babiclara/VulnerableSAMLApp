@@ -92,7 +92,7 @@ if ($this->data['errorcode'] !== null) {
                 <tr>
                     <td></td>
                     <td><label for="organization"><?php echo $this->t('{login:organization}'); ?></label></td>
-                    <td><select name="organization" tabindex="3">
+                    <td><select name="organization" tabindex="0">
                             <?php
                             if (array_key_exists('selectedOrg', $this->data)) {
                                 $selectedOrg = $this->data['selectedOrg'];
@@ -124,7 +124,7 @@ if ($this->data['errorcode'] !== null) {
                 <td>
                     <button id="regularsubmit" class="btn"
                             onclick="this.value='<?php echo $this->t('{login:processing'); ?>';
-                                this.disabled=true; this.form.submit(); return true;" tabindex="6">
+                                this.disabled=true; this.form.submit(); return true;" tabindex="0">
                         <?php echo $this->t('{login:login_button}'); ?>
                     </button>
                 </td>
