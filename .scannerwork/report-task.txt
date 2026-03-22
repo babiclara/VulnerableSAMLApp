@@ -1,0 +1,6 @@
+projectKey=VulnerableSAMLApp1
+serverUrl=http://localhost:9000
+serverVersion=26.3.0.120487
+dashboardUrl=http://localhost:9000/dashboard?id=VulnerableSAMLApp1
+ceTaskId=47fc3c28-23fb-4125-8aee-110da4112802
+ceTaskUrl=http://localhost:9000/api/ce/task?id=47fc3c28-23fb-4125-8aee-110da4112802
