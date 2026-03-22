@@ -174,6 +174,15 @@ class OneLogin_Saml2_Logout_Request(object):
             elem = fromstring(request)
         return elem.get('ID', None)
 
+
+    @staticmethod
+    def _parse_request_element(request):
+        if isinstance(request, etree._Element):
+            return request
+        if isinstance(request, Document):
+            request = request.toxml()
+        return fromstring(request)
+
     @staticmethod
     def get_nameid_data(request, key=None):
         """
@@ -185,12 +194,7 @@ class OneLogin_Saml2_Logout_Request(object):
         :return: Name ID Data (Value, Format, NameQualifier, SPNameQualifier)
         :rtype: dict
         """
-        if isinstance(request, etree._Element):
-            elem = request
-        else:
-            if isinstance(request, Document):
-                request = request.toxml()
-            elem = fromstring(request)
+        elem = OneLogin_Saml2_Logout_Request._parse_request_element(request)
 
         name_id = None
         encrypted_entries = OneLogin_Saml2_Utils.query(elem, '/samlp:LogoutRequest/saml:EncryptedID')
