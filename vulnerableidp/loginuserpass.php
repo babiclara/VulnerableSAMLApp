@@ -37,10 +37,10 @@ if ($this->data['errorcode'] !== null) {
     <img src="/simplesamlphp/resources/welcome.png" alt="Jellystone IDP Welcome" />
     <br>
     <form action="?" method="post" name="f" style="background-color:#E6E6FA">                                                                                                                                     
-        <table>                                                                                                                                                                  
+        <table>
+            <thead>
             <tr>                                                                                                                                                                 
-                <td rowspan="2">                                                                                                                                                 
-                                                            
+                <td rowspan="2">
                 </td>                                                                                                                                                            
                 <td><label for="username"><?php echo $this->t('{login:username}'); ?></label></td>                                                                               
                 <td>                                                                                                                                                             
@@ -55,7 +55,7 @@ if ($this->data['errorcode'] !== null) {
                 // display the "remember my username" checkbox                                                                                                                   
             ?>                                                                                                                                                                   
                 <td>                                                                                                                                                             
-                    <input type="checkbox" id="remember_username" tabindex="4"                                                                                                   
+                    <input type="checkbox" id="remember_username" tabindex="0"
                            <?php echo ($this->data['rememberUsernameChecked']) ? 'checked="checked"' : ''; ?>                                                                    
                            name="remember_username" value="Yes"/>                                                                                                                
                     <small><?php echo $this->t('{login:remember_username}'); ?></small>                                                                                          
