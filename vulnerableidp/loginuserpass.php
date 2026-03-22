@@ -37,11 +37,16 @@ if ($this->data['errorcode'] !== null) {
     <img src="/simplesamlphp/resources/welcome.png" alt="Jellystone IDP Welcome" />
     <br>
     <form action="?" method="post" name="f" style="background-color:#E6E6FA">
-        <table>
-            <thead>
-            <tr>
-                <td rowspan="2">
-                </td>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Field</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td rowspan="2">
                 <td><label for="username"><?php echo $this->t('{login:username}'); ?></label></td>
                 <td>
                     <input id="username" <?php echo ($this->data['forceUsername']) ? 'disabled="disabled"' : ''; ?>
