@@ -51,6 +51,35 @@ def prepare_flask_request(request):
         'query_string': request.query_string
     }
 
+def handle_slo(auth, session):
+    name_id = session.get('samlNameId')
+    session_index = session.get('samlSessionIndex')
+    return safe_redirect(auth.logout(name_id=name_id, session_index=session_index))
+
+def handle_acs(auth, req, request, session):
+    auth.process_response()
+    errors = auth.get_errors()
+    not_auth_warn = not auth.is_authenticated()
+    if len(errors) == 0:
+        session['samlUserdata'] = auth.get_attributes()
+        session['samlNameId'] = auth.get_nameid()
+        session['samlSessionIndex'] = auth.get_session_index()
+        self_url = OneLogin_Saml2_Utils.get_self_url(req)
+        if 'RelayState' in request.form and self_url != request.form['RelayState']:
+            return safe_redirect(auth.redirect_to(request.form['RelayState'])), errors, not_auth_warn
+    return None, errors, not_auth_warn
+
+def handle_sls(auth, session):
+    dscb = lambda: session.clear()
+    url = auth.process_slo(delete_session_cb=dscb)
+    errors = auth.get_errors()
+    success_slo = False
+    if len(errors) == 0:
+        if url is not None:
+            return safe_redirect(url), errors, True
+        else:
+            success_slo = True
+    return None, errors, success_slo
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -63,39 +92,20 @@ def index():
     paint_logout = False
 
     if 'sso' in request.args:
-        return redirect(auth.login())
+        return safe_redirect(auth.login())
     elif 'sso2' in request.args:
         return_to = '%sprofile/' % request.host_url
-        return redirect(auth.login(return_to))
+        return safe_redirect(auth.login(return_to))
     elif 'slo' in request.args:
-        name_id = None
-        session_index = None
-        if 'samlNameId' in session:
-            name_id = session['samlNameId']
-        if 'samlSessionIndex' in session:
-            session_index = session['samlSessionIndex']
-
-        return redirect(auth.logout(name_id=name_id, session_index=session_index))
+        return handle_slo(auth, session)
     elif 'acs' in request.args:
-        auth.process_response()
-        errors = auth.get_errors()
-        not_auth_warn = not auth.is_authenticated()
-        if len(errors) == 0:
-            session['samlUserdata'] = auth.get_attributes()
-            session['samlNameId'] = auth.get_nameid()
-            session['samlSessionIndex'] = auth.get_session_index()
-            self_url = OneLogin_Saml2_Utils.get_self_url(req)
-            if 'RelayState' in request.form and self_url != request.form['RelayState']:
-                return redirect(auth.redirect_to(request.form['RelayState']))
+        redirect_resp, errors, not_auth_warn = handle_acs(auth, req, request, session)
+        if redirect_resp:
+            return redirect_resp
     elif 'sls' in request.args:
-        dscb = lambda: session.clear()
-        url = auth.process_slo(delete_session_cb=dscb)
-        errors = auth.get_errors()
-        if len(errors) == 0:
-            if url is not None:
-                return redirect(url)
-            else:
-                success_slo = True
+        redirect_resp, errors, success_slo = handle_sls(auth, session)
+        if redirect_resp:
+            return redirect_resp
 
     if 'samlUserdata' in session:
         paint_logout = True
@@ -110,7 +120,6 @@ def index():
         attributes=attributes,
         paint_logout=paint_logout
     )
-
 #### Page loads the users profile information
 @app.route('/profile/')
 def profile():
@@ -159,8 +168,8 @@ def settingsPage():
                         currentSettings = jsonReader()
 
                         return render_template('settings.html', paint_logout=paint_logout,
-                                attributes=attributes,currentSettings=currentSettings)
-    
+                                               attributes=attributes,currentSettings=currentSettings)
+
     return redirect('/')
 
 #### Post action to Adjust the security levels of the application
@@ -180,8 +189,8 @@ def update():
                         signMetadata = 'signMetadata' in request.form
                         validMessage = 'validMessage' in request.form
                         validAssertion = 'validAssertion' in request.form
-                        cve201711427 = 'cve-2017-11427' in request.form 
-        
+                        cve201711427 = 'cve-2017-11427' in request.form
+
                         jsonEditor(wantMessagesSigned,wantAssertionsSigned,signMetadata,validMessage,validAssertion,cve201711427)
 
                         return redirect('/settings/')
@@ -194,7 +203,7 @@ def learnPage():
     attributes = False
 
     if 'samlUserdata' in session:
-	    paint_logout = True
+        paint_logout = True
 
     return render_template('learn.html', paint_logout=paint_logout, attributes=attributes)
 
@@ -207,7 +216,7 @@ def complaints():
     if 'samlUserdata' in session:
         paint_logout = True
         if len(session['samlUserdata']) > 0:
-                attributes = session['samlUserdata'].items()
+            attributes = session['samlUserdata'].items()
     complaintDic = jsonComplaintReader()
     return render_template('complaints.html', paint_logout=paint_logout,attributes=attributes,dictionary=complaintDic)
 
@@ -218,7 +227,7 @@ def filecomplaint():
     attributes = False
 
     if 'samlUserdata' in session:
-	    paint_logout = True
+        paint_logout = True
 
     return render_template('filecomplaint.html', paint_logout=paint_logout, attributes=attributes)
 
@@ -228,7 +237,7 @@ def newcomplaint():
     complaint = request.form['complaintDescription']
     severity = request.form['severity']
     victim = request.form['victim']
-    
+
     #Generate a 'unique' event id
     complaintID = int(round(time.time() * 1000))
     complaintID = str(complaintID)
@@ -248,7 +257,7 @@ def restoreComplaints():
                 if attr[0] == 'memberOf':
                     if attr[1][0] == 'PlatformConfiguration':
                         copyfile('complaints/complaints.json.bak', 'complaints/complaints.json')
-            
+
     return redirect('/complaints/')
 
 ### Delete single complaint
