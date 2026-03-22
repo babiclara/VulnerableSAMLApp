@@ -16,7 +16,7 @@ from defusedxml.minidom import parseString
 from onelogin.saml2.constants import OneLogin_Saml2_Constants
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
 
-
+MD_KEY_DESCRIPTOR = 'md:KeyDescriptor'
 class OneLogin_Saml2_Metadata(object):
     """
 
@@ -103,20 +103,20 @@ class OneLogin_Saml2_Metadata(object):
                     for attrValue in req_attribs['attributeValue']:
                         req_attr_aux_str += """
                 <saml:AttributeValue xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">%(attributeValue)s</saml:AttributeValue>""" % \
-                            {
-                                'attributeValue': attrValue
-                            }
+                                            {
+                                                'attributeValue': attrValue
+                                            }
                     req_attr_aux_str += """
             </md:RequestedAttribute>"""
 
                 requested_attribute = """            <md:RequestedAttribute Name="%(req_attr_name)s"%(req_attr_nameformat_str)s%(req_attr_friendlyname_str)s%(req_attr_isrequired_str)s%(req_attr_aux_str)s""" % \
-                    {
-                        'req_attr_name': req_attribs['name'],
-                        'req_attr_nameformat_str': req_attr_nameformat_str,
-                        'req_attr_friendlyname_str': req_attr_friendlyname_str,
-                        'req_attr_isrequired_str': req_attr_isrequired_str,
-                        'req_attr_aux_str': req_attr_aux_str
-                    }
+                                      {
+                                          'req_attr_name': req_attribs['name'],
+                                          'req_attr_nameformat_str': req_attr_nameformat_str,
+                                          'req_attr_friendlyname_str': req_attr_friendlyname_str,
+                                          'req_attr_isrequired_str': req_attr_isrequired_str,
+                                          'req_attr_aux_str': req_attr_aux_str
+                                      }
 
                 requested_attribute_data.append(requested_attribute)
 
@@ -125,20 +125,20 @@ class OneLogin_Saml2_Metadata(object):
 %(attr_cs_desc)s%(requested_attribute_str)s
         </md:AttributeConsumingService>
 """ % \
-                {
-                    'service_name': sp['attributeConsumingService']['serviceName'],
-                    'attr_cs_desc': attr_cs_desc_str,
-                    'requested_attribute_str': '\n'.join(requested_attribute_data)
-                }
+                                              {
+                                                  'service_name': sp['attributeConsumingService']['serviceName'],
+                                                  'attr_cs_desc': attr_cs_desc_str,
+                                                  'requested_attribute_str': '\n'.join(requested_attribute_data)
+                                              }
 
         sls = ''
         if 'singleLogoutService' in sp and 'url' in sp['singleLogoutService']:
             sls = """        <md:SingleLogoutService Binding="%(binding)s"
                                 Location="%(location)s" />\n""" % \
-                {
-                    'binding': sp['singleLogoutService']['binding'],
-                    'location': sp['singleLogoutService']['url'],
-                }
+                  {
+                      'binding': sp['singleLogoutService']['binding'],
+                      'location': sp['singleLogoutService']['url'],
+                  }
 
         str_authnsign = 'true' if authnsign else 'false'
         str_wsign = 'true' if wsign else 'false'
@@ -165,11 +165,11 @@ class OneLogin_Saml2_Metadata(object):
         <md:GivenName>%(name)s</md:GivenName>
         <md:EmailAddress>%(email)s</md:EmailAddress>
     </md:ContactPerson>""" % \
-                    {
-                        'type': ctype,
-                        'name': info['givenName'],
-                        'email': info['emailAddress'],
-                    }
+                          {
+                              'type': ctype,
+                              'name': info['givenName'],
+                              'email': info['emailAddress'],
+                          }
                 contacts_info.append(contact)
             str_contacts = '\n'.join(contacts_info) + '\n'
 
@@ -185,20 +185,20 @@ class OneLogin_Saml2_Metadata(object):
                                      index="1" />
 %(attribute_consuming_service)s    </md:SPSSODescriptor>
 %(organization)s%(contacts)s</md:EntityDescriptor>""" % \
-            {
-                'valid': ('validUntil="%s"' % valid_until_str) if valid_until_str else '',
-                'cache': ('cacheDuration="%s"' % cache_duration_str) if cache_duration_str else '',
-                'entity_id': sp['entityId'],
-                'authnsign': str_authnsign,
-                'wsign': str_wsign,
-                'name_id_format': sp['NameIDFormat'],
-                'binding': sp['assertionConsumerService']['binding'],
-                'location': sp['assertionConsumerService']['url'],
-                'sls': sls,
-                'organization': str_organization,
-                'contacts': str_contacts,
-                'attribute_consuming_service': str_attribute_consuming_service
-            }
+                   {
+                       'valid': ('validUntil="%s"' % valid_until_str) if valid_until_str else '',
+                       'cache': ('cacheDuration="%s"' % cache_duration_str) if cache_duration_str else '',
+                       'entity_id': sp['entityId'],
+                       'authnsign': str_authnsign,
+                       'wsign': str_wsign,
+                       'name_id_format': sp['NameIDFormat'],
+                       'binding': sp['assertionConsumerService']['binding'],
+                       'location': sp['assertionConsumerService']['url'],
+                       'sls': sls,
+                       'organization': str_organization,
+                       'contacts': str_contacts,
+                       'attribute_consuming_service': str_attribute_consuming_service
+                   }
         return metadata
 
     @staticmethod
@@ -262,7 +262,7 @@ class OneLogin_Saml2_Metadata(object):
         key_info = xml.createElementNS(OneLogin_Saml2_Constants.NS_DS, 'ds:KeyInfo')
         key_info.appendChild(key_data)
 
-        key_descriptor = xml.createElementNS(OneLogin_Saml2_Constants.NS_DS, 'md:KeyDescriptor')
+        key_descriptor = xml.createElementNS(OneLogin_Saml2_Constants.NS_DS, MD_KEY_DESCRIPTOR)
 
         entity_descriptor = xml.getElementsByTagName('md:EntityDescriptor')[0]
 
@@ -271,13 +271,13 @@ class OneLogin_Saml2_Metadata(object):
         if add_encryption:
             sp_sso_descriptor.insertBefore(key_descriptor.cloneNode(True), sp_sso_descriptor.firstChild)
 
-        signing = xml.getElementsByTagName('md:KeyDescriptor')[0]
+        signing = xml.getElementsByTagName(MD_KEY_DESCRIPTOR)[0]
         signing.setAttribute('use', 'signing')
         signing.appendChild(key_info)
         signing.setAttribute('xmlns:ds', OneLogin_Saml2_Constants.NS_DS)
 
         if add_encryption:
-            encryption = xml.getElementsByTagName('md:KeyDescriptor')[1]
+            encryption = xml.getElementsByTagName(MD_KEY_DESCRIPTOR)[1]
             encryption.setAttribute('use', 'encryption')
             encryption.appendChild(key_info.cloneNode(True))
             encryption.setAttribute('xmlns:ds', OneLogin_Saml2_Constants.NS_DS)
