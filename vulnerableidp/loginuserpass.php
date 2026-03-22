@@ -34,7 +34,7 @@ if ($this->data['errorcode'] !== null) {
 ?>
     <div style="text-align: center;">
     <h1 style="break: both"><?php echo 'Jellystone IDP' ?></h1>                                                                                                                                                                                             
-    <img src="/simplesamlphp/resources/welcome.png"></img>                                                                                                                                                                          
+    <img src="/simplesamlphp/resources/welcome.png" alt="Jellystone IDP Welcome" />
     <br>
     <form action="?" method="post" name="f" style="background-color:#E6E6FA">                                                                                                                                     
         <table>                                                                                                                                                                  
