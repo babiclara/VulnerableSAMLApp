@@ -1,3 +1,4 @@
+#Lara Babic, 0067638894
 import os
 
 PASSWORDS_FILE = r"C:\Users\lara\SC_0067638894\passwords.txt"

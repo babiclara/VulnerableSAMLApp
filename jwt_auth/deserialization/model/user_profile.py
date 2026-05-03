@@ -1,3 +1,4 @@
+#Lara Babic, 0067638894
 import pickle
 
 class UserProfile:
