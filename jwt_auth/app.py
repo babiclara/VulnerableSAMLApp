@@ -1,5 +1,6 @@
 
 import logging
+from deserialization.controller.deserialization_controller import deserialization_bp
 
 from flask import Flask, jsonify, g
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -26,7 +27,7 @@ app.config['SECRET_KEY'] = config.SECRET_KEY
 db.init_app(app)
 
 app.register_blueprint(auth_bp)
-
+app.register_blueprint(deserialization_bp)
 @app.route('/api/protected', methods=['GET'])
 @auth_required
 def protected():
